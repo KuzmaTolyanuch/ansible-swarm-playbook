@@ -13,6 +13,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
+    apt-get install -y git
+    apt-get install -y curl
     apt-get install -y python python-pip
     pip install docker-py
   SHELL
@@ -31,7 +33,7 @@ Vagrant.configure(2) do |config|
         # node.vm.network "forwarded_port", guest: 80, host: 8080
         # hack to only run once at the end
         if i == 6
-          node.vm.provision "ansible" do |ansible|
+          node.vm.provision "ansible_local" do |ansible|
             ansible.playbook = "swarm.yml"
             #ansible.playbook = "swarm-facts.yml"
             ansible.limit = "all"
